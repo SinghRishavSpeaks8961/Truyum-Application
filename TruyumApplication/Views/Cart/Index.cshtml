@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TruyumApplication.Models.Cart>
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Cart</h2>
+<hr />
+@if (!Model.Any())
+{
+   <p>No Items in Cart. @Html.ActionLink("View Menu Items","Admin","MenuItems",routeValues:new { isAdmin=false},htmlAttributes:null)</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Free Delivery</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.MenuItem.Name</td>
+                    <td>@Html.CheckBox("Free Delivery",item.MenuItem.FreeDelivery)</td>
+                    <td>@item.MenuItem.Price</td>
+                    <td>@Html.ActionLink("Remove","Delete","Cart",routeValues: new { id=item.Id},htmlAttributes: null)</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+

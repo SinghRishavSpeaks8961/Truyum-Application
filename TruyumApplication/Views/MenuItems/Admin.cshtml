@@ -1,0 +1,72 @@
+﻿@model IEnumerable<TruyumApplication.Models.MenuItem>
+@{
+    /**/
+    if (ViewBag.IsAdmin)
+    {
+        ViewBag.Title = "Admin";
+    }
+    else
+    {
+        ViewBag.Title = "Customer";
+    }
+
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Menu-Items</h1>
+
+@if (ViewBag.IsAdmin)
+{
+    @Html.ActionLink("Create new", "Create", "MenuItems")
+}
+<hr />
+
+@if (!Model.Any())
+{
+    <h2>No Items in the List</h2>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                @if (ViewBag.IsAdmin)
+                 {
+                    <th>Active</th>
+                    <th>Date Of Launch</th>
+                 }
+                <th>Category</th>
+                <th>Free Delivery</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                @if (ViewBag.IsAdmin)
+                {
+                    <td>@Html.CheckBox("Active", item.Active,new { @disabled="disabled"})</td>
+                    <td>@item.DateOfLaunch.ToString("dd/MM/yyyy")</td>
+                }
+                <td>@item.Category.Name</td>
+                <td>@Html.CheckBox("Delivery", item.FreeDelivery,new { @disabled = "disabled" })</td>
+                @if (ViewBag.IsAdmin)
+                {
+                    <td>@Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
+                }
+                else
+                {
+                    <td>@Html.ActionLink("Add to Cart", "AddToCart","Cart", routeValues:new { menuItemId = item.Id },htmlAttributes:null)</td>
+                }
+
+            </tr>
+            }
+        </tbody>
+    </table>
+}
